@@ -8,7 +8,8 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Error.h"
 
-using namespace clang;
+#include <vector>
+
 using CommonOptionsParser = clang::tooling::CommonOptionsParser;
 using ClangTool = clang::tooling::ClangTool;
 
@@ -26,7 +27,11 @@ int main(int argc, const char **argv) {
 
     ClangTool Tool(OptionsParser->getCompilations(),
 		   OptionsParser->getSourcePathList());
+    
+    std::vector<std::unique_ptr<clang::ASTUnit>> ASTs;
+    
+    int ret = Tool.buildASTs(ASTs);
 
-    return 0;
+    return ret;
 }
 
